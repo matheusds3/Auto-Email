@@ -21,10 +21,9 @@ class Sqlfuncs():
                 user=self.user,
                 password=self.password
             )
-        except Error as erro:
-            print('Erro de Conexão.')
-        finally:
             print('Conectado com sucesso.')
+        except Error as erro:
+            print('Erro de Conexão. Dados Incorretos!')
 
     def desconecta(self):
         self.con.close()

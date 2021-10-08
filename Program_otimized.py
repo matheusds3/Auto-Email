@@ -1,6 +1,6 @@
 from MySQLFunctions import *
 from Emailconfig import *
-
+from displayclient import *
 # Conexão ao banco de dados
 
 #Sqlfuncs cria o objeto de conexão
@@ -24,12 +24,14 @@ print('\nEscolha uma das opções a seguir:\n'
       'cadastrar, consultar, atualizar, deletar\n'
       'enviar?')
 
-"""
+
 logar = conectar.conecta
 consultar = conectar.consulta # (insert table, insert column_name)
 atualizar = conectar.atualizar # (insert table, insert column_id)
 cadastrar = conectar.cadastrar # (table, column_name)
 deletar = conectar.deletar # (table, column_id)
-
+"""
 
 send = envia.enviar
+a = Tk()
+Display(a)
