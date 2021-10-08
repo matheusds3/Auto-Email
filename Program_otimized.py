@@ -3,7 +3,9 @@ from Emailconfig import *
 
 # Conexão ao banco de dados
 
-conectar = Conexao('127.0.0.1', 'empresas', 'matheus', '21454867')
+#Sqlfuncs cria o objeto de conexão
+conectar = Sqlfuncs('127.0.0.1', 'empresas', 'matheus', '21454867')
+#Enviar cria o objeto de envio
 envia = Enviar('127.0.0.1', 'empresas', 'matheus', '21454867')
 
 # dados do banco acessado
@@ -23,6 +25,7 @@ print('\nEscolha uma das opções a seguir:\n'
       'enviar?')
 
 """
+logar = conectar.conecta
 consultar = conectar.consulta # (insert table, insert column_name)
 atualizar = conectar.atualizar # (insert table, insert column_id)
 cadastrar = conectar.cadastrar # (table, column_name)

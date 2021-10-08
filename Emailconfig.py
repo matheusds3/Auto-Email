@@ -4,6 +4,7 @@ import pandas
 import datetime
 from time import sleep
 
+
 # data atual
 
 data = datetime.datetime.now()
@@ -16,7 +17,7 @@ else:
 # lendo dados da tabela sql
 
 
-class Enviar:
+class Enviar():
 
     """Envia e-mails automáticos com anexos para diversos objetos do banco de dados"""
 

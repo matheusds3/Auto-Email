@@ -2,7 +2,7 @@ import mysql.connector
 from mysql.connector import Error
 
 
-class Conexao:
+class Sqlfuncs():
 
     """conecta ao banco sql"""
 
@@ -11,9 +11,11 @@ class Conexao:
         self.database = database
         self.user = user
         self.password = password
+
+    def conecta(self):
         try:
             global con
-            con = mysql.connector.connect(
+            self.con = mysql.connector.connect(
                 host=self.host,
                 database=" ",
                 user=self.user,
@@ -23,6 +25,10 @@ class Conexao:
             print('Erro de Conexão.')
         finally:
             print('Conectado com sucesso.')
+
+    def desconecta(self):
+        self.con.close()
+        print('Conexão Finalizada.')
 
     # Consulta ao banco de dados
 
