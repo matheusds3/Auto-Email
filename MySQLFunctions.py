@@ -1,6 +1,6 @@
 import mysql.connector
 from mysql.connector import Error
-
+from tkinter import messagebox
 
 
 class Sqlfuncs():
@@ -18,46 +18,54 @@ class Sqlfuncs():
             global con
             self.con = mysql.connector.connect(
                 host=self.host,
-                database=" ",
+                database="empresas",
                 user=self.user,
                 password=self.password
             )
             if self.con.is_connected:
-                print("Conectado")
                 return self.con, True
         except Error as erro:
-            print("Error")
-            return False
+            messagebox.showinfo("Erro", "Dados Incorretos!")
+            return None, False
 
     def desconecta(self, con):
         con.close()
-        print('Conexão Finalizada.')
+        messagebox.showinfo("", "Conexão Finalizada.")
 
     # Consulta ao banco de dados
-
 
     def consulta(self, con, table, column_name, keyword):
 
         """consulta dados na tabela sql"""
 
         cursor = con.cursor()
-        try:
-            selecionar_banco = f'''use {self.database}'''
-            consulta_sql = f'select * from {table} where {column_name} = ' + '\'' + keyword + '\''
-            cursor.execute(selecionar_banco)
-            cursor.execute(consulta_sql)
-            linhas = cursor.fetchall()
+        if keyword == "":
+            messagebox.showinfo("", "Insira o nome!")
+        else:
+            try:
+                selecionar_banco = f'''use {self.database}'''
+                consulta_sql = f'select * from {table} where {column_name} = ' + '\'' + keyword + '\''
+                cursor.execute(selecionar_banco)
+                cursor.execute(consulta_sql)
+                linhas = cursor.fetchall()
 
-            for linha in linhas:
-                print('Id: ', linha[0])
-                print('Empresa: ', linha[1])
-                print('E-mail: ', linha[3])
-                print('Data de Envio: ', linha[2])
-        except Error as erro:
-            print('Erro ao consultar tabela: {}'.format(erro))
-        finally:
-            if con.is_connected():
-                cursor.close()
+                for linha in linhas:
+                    self.id = linha[0]
+                    self.empresa = linha[1]
+                    self.email = linha[3]
+                    self.envio = linha[2]
+
+
+                messagebox.showinfo("Consulta", "Dados:\n"
+                                                f"Id: {self.id}\n"
+                                                f"Empresa: {self.empresa}\n"
+                                                f"E-mail: {self.email}\n"
+                                                f"Data de Envio: {self.envio}")
+            except Error as erro:
+                messagebox.showinfo("Erro", "Erro ao consultar {}".format(erro))
+            finally:
+                if con.is_connected():
+                    cursor.close()
 
     # Atualizar banco de dados
 
@@ -75,9 +83,12 @@ class Sqlfuncs():
             cursor.execute(selecionar_banco)
             cursor.execute(sql)
             con.commit()
-            print('Valor Alterado com sucesso.')
+            messagebox.showinfo("Atualizado", "Registro Atualizado\n"
+                                              " com Sucesso!")
         except Error as erro:
-            print('Falha ao atualizar dados na tabela: {}'.format(erro))
+            messagebox.showinfo("Erro", "Falha ao atualizar dados na tabela:\n"
+                                        " {}".format(erro))
+
         finally:
             if con.is_connected():
                 cursor.close()
@@ -88,86 +99,96 @@ class Sqlfuncs():
 
         """cadastrar dados no banco sql"""
         cursor = con.cursor()
-        try:
-            criar_banco = f'''create database if not exists empresas'''
-            selecionar_banco = f'''use empresas'''
-            criar_tabela = f'''create table if not exists {table} (
-                        id_empresa smallint auto_increment primary key,
-                        nome_empresa varchar(50) not null unique,
-                        data_envio varchar(50) not null,
-                        email varchar(60) not null
-                        )'''
-            dados = '(\'' + str(nome_cadastro) + '\',\'' + dia_envio + '\',\'' + str(email) + '\''');'
+        if nome_cadastro == "" or dia_envio == "" or email == "":
+            messagebox.showinfo("", "Dados Incompletos.")
+            pass
+        else:
+            try:
+                criar_banco = f'''create database if not exists empresas'''
+                selecionar_banco = f'''use empresas'''
+                criar_tabela = f'''create table if not exists {table} (
+                            id_empresa smallint auto_increment primary key,
+                            nome_empresa varchar(50) not null unique,
+                            data_envio varchar(50) not null,
+                            email varchar(60) not null
+                            )'''
+                dados = '(\'' + str(nome_cadastro) + '\',\'' + dia_envio + '\',\'' + str(email) + '\''');'
 
-            inserir_empresa = f'''insert into {table} (
-                        nome_empresa, data_envio, email) values ''' + dados
+                inserir_empresa = f'''insert into {table} (
+                            nome_empresa, data_envio, email) values ''' + dados
 
-            cursor.execute(criar_banco)
-            cursor.execute(selecionar_banco)
-            cursor.execute(criar_tabela)
-            cursor.execute(selecionar_banco)
-            cursor.execute(inserir_empresa)
-            con.commit()
+                cursor.execute(criar_banco)
+                cursor.execute(selecionar_banco)
+                cursor.execute(criar_tabela)
+                cursor.execute(selecionar_banco)
+                cursor.execute(inserir_empresa)
+                con.commit()
 
-            consulta_sql = f'select * from {table} where {column} = ' + '\'' + nome_cadastro + '\''
 
-            cursor.execute(consulta_sql)
-            linhas = cursor.fetchall()
+                consulta_sql = f'select * from {table} where {column} = ' + '\'' + nome_cadastro + '\''
 
-            for linha in linhas:
-                print('Id: ', linha[0])
-                print('Empresa: ', linha[1])
-                print('E-mail: ', linha[3])
-                print('Data de Envio: ', linha[2])
-            cursor.close()
-            if con.is_connected():
-                print('Registro inserido com sucesso!')
+                cursor.execute(consulta_sql)
+                linhas = cursor.fetchall()
 
-        except Error as erro:
-            print('Erro ao cadastrar valores. Possivelmente já existe no banco.')
-        finally:
-            if con.is_connected():
+
+                for linha in linhas:
+                    self.id = linha[0]
+                    self.empresa = linha[1]
+                    self.email = linha[3]
+                    self.envio = linha[2]
+
+
                 cursor.close()
+                if con.is_connected():
+                    messagebox.showinfo("Registrado", "Registro Inserido com Sucesso!\n"
+                                                      f"Id: {self.id}\n"
+                                                      f"Empresa: {self.empresa}\n"
+                                                      f"E-mail: {self.email}\n"
+                                                      f"Data de Envio: {self.envio}")
+
+                    return linhas
+
+            except Error as erro:
+                messagebox.showinfo("Erro", "Falha ao inserir valores:\n"
+                                            "Já existe um registro\n"
+                                            " com mesmo nome!")
+
+            finally:
+                if con.is_connected():
+                    cursor.close()
 
     # Deletar do banco de dados
 
     def deletar(self, con, table, column_id, id_sql):
 
         cursor = con.cursor()
-        try:
-            deletar_dado = f'''delete from {table} where {column_id} = ''' + '\'' + id_sql + '\''
-            selecionar_banco = f'''use {self.database}'''
-            consulta_sql = f'select * from {table} where {column_id} = ' + '\'' + id_sql + '\''
+        if id_sql == "":
+            messagebox.showinfo("Erro", "Insira o ID!")
+        else:
+            try:
+                deletar_dado = f'''delete from {table} where {column_id} = ''' + '\'' + id_sql + '\''
+                selecionar_banco = f'''use {self.database}'''
+                consulta_sql = f'select * from {table} where {column_id} = ' + '\'' + id_sql + '\''
 
-            cursor.execute(selecionar_banco)
-            cursor.execute(consulta_sql)
-            linhas = cursor.fetchall()
+                cursor.execute(selecionar_banco)
+                cursor.execute(consulta_sql)
+                linhas = cursor.fetchall()
 
-            for linha in linhas:
-                print('Id: ', linha[0])
-                print('Empresa: ', linha[1])
-                print('E-mail: ', linha[3])
-                print('Data de Envio: ', linha[2])
-            """
-            apagar = input('Tem certeza que deseja apagar esta\n'
-                           'empresa? s = sim/ n = não ')
-            if apagar == 's':
+                for linha in linhas:
+                    self.id = linha[0]
+                    self.empresa = linha[1]
+                    self.email = linha[3]
+                    self.envio = linha[2]
+                if con.is_connected():
+                    messagebox.showinfo("", "Registro Deletado com Sucesso!\n"
+                                            f"Id: {self.id}\n"
+                                            f"Empresa: {self.empresa}\n"
+                                            f"E-mail: {self.email}\n"
+                                            f"Data de Envio: {self.envio}")
                 cursor.execute(deletar_dado)
                 con.commit()
-                cursor.close()
+            except Error as erro:
+                messagebox.showinfo("Erro", "Erro ao deletar dado.")
+            finally:
                 if con.is_connected():
-            """
-            cursor.execute(deletar_dado)
-            con.commit()
-            print('Registro deletado com sucesso!')
-            """
-            if apagar == 'n':
-                deletar_dado = None
-                print('Operação Cancelada pelo usuário.')
-                """
-
-        except Error as erro:
-            print('Erro ao deletar valores.')
-        finally:
-            if con.is_connected():
-                cursor.close()
+                    cursor.close()

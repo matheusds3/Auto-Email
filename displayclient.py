@@ -1,11 +1,10 @@
 from tkinter import *
-from tkinter import messagebox
 from MySQLFunctions import *
 
 
 # Tela Inicial
 
-class Display():
+class Display:
     def __init__(self, tela):
         self.tela = tela
         self.screen()
@@ -50,9 +49,7 @@ class Display():
             self.close()
             self.retorna()
 
-        else:
-            messagebox.showerror("Error", "Dados Incorretos!")
-            self.limpar()
+        self.limpar()
     def close(self):
         self.tela.quit()
         #.quit() fecha a tela, mas continua em execução
@@ -116,6 +113,7 @@ class Display2:
         self.sair = Button(self.frame, text="Desconectar", bd=2, bg="#f8f8ff",
                         fg="black", font=("verdana", 6, "bold"), command=self.sair)
         self.sair.place(relx=0.4, rely=0.92, relwidth=0.2, relheight=0.06)
+
 
     def sair(self):
         self.ret = 6
@@ -217,7 +215,6 @@ class DisplayCadastrar:
         Sqlfuncs('127.0.0.1', 'empresas', f'{self.user_entry}',
                  f'{self.password_entry}').cadastrar(self.con, 'empresas_datas', 'nome_empresa', self.cadastro_nome_entry.get(), self.dia_entry.get(), self.email_entry.get())
         self.close()
-
     def close(self):
         self.tela.quit()
 

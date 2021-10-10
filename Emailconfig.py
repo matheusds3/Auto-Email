@@ -1,5 +1,4 @@
 import win32com.client as win32
-import sqlalchemy
 import pandas
 import datetime
 from time import sleep
@@ -21,20 +20,19 @@ class Enviar():
 
     """Envia e-mails automáticos com anexos para diversos objetos do banco de dados"""
 
-    def __init__(self, host, database, user, password):
+    def __init__(self, host, database, user, password, con):
         self.host = host
         self.database = database
         self.user = user
         self.password = password
+        self.con = con
 
     def enviar(self):
 
         # lendo dados da tabela sql
 
-        engine = sqlalchemy.create_engine(f'mysql+pymysql://'
-                                          f'{self.user}:{self.password}@{self.host}:3306/{self.database}')
         dataframe = pandas.read_sql_query(
-            f'select email, id_empresa from empresas_datas where data_envio = {dia}', engine)
+            f'select email, id_empresa from empresas_datas where data_envio = {dia}', self.con)
         lista_aux_email = dataframe['email']
         lista_aux_id = dataframe['id_empresa']
         qtd = len(lista_aux_email)

@@ -26,7 +26,7 @@ while loop != 0:
         DisplayDeletar(tela, user_pass_and_con[0], user_pass_and_con[1], user_pass_and_con[2])
         loop = 1
     elif opcao == 5:
-        Enviar("127.0.0.1", "empresas", user_pass_and_con[0], user_pass_and_con[1]).enviar()
+        Enviar("127.0.0.1", "empresas", f"{user_pass_and_con[0]}", f"{user_pass_and_con[1]}", user_pass_and_con[2]).enviar()
         loop = 1
     elif opcao == 6:
         loop = 0
