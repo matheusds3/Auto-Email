@@ -6,6 +6,7 @@
   <component name="ChangeListManager">
     <list default="true" id="dc7ca7d6-8275-40d9-9482-1e27869c7f09" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MySQLFunctions.py" beforeDir="false" afterPath="$PROJECT_DIR$/MySQLFunctions.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Program_otimized.py" beforeDir="false" afterPath="$PROJECT_DIR$/Program_otimized.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/displayclient.py" beforeDir="false" afterPath="$PROJECT_DIR$/displayclient.py" afterDir="false" />
     </list>
@@ -144,8 +145,8 @@
     <recent_temporary>
       <list>
         <item itemvalue="Python.MySQLFunctions" />
-        <item itemvalue="Python.Program_otimized" />
         <item itemvalue="Python.displayclient" />
+        <item itemvalue="Python.Program_otimized" />
         <item itemvalue="Python.display" />
         <item itemvalue="Python.Emailconfig" />
       </list>

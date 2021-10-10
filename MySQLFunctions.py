@@ -2,6 +2,7 @@ import mysql.connector
 from mysql.connector import Error
 
 
+
 class Sqlfuncs():
 
     """conecta ao banco sql"""
@@ -21,22 +22,26 @@ class Sqlfuncs():
                 user=self.user,
                 password=self.password
             )
-            print('Conectado com sucesso.')
+            if self.con.is_connected:
+                print("Conectado")
+                return self.con, True
         except Error as erro:
-            print('Erro de Conexão. Dados Incorretos!')
+            print("Error")
+            return False
 
-    def desconecta(self):
-        self.con.close()
+    def desconecta(self, con):
+        con.close()
         print('Conexão Finalizada.')
 
     # Consulta ao banco de dados
 
-    def consulta(self, table, column_name):
+
+    def consulta(self, con, table, column_name, keyword):
 
         """consulta dados na tabela sql"""
+
         cursor = con.cursor()
         try:
-            keyword = str(input('Digite o nome que deseja buscar: '))
             selecionar_banco = f'''use {self.database}'''
             consulta_sql = f'select * from {table} where {column_name} = ' + '\'' + keyword + '\''
             cursor.execute(selecionar_banco)
@@ -56,14 +61,12 @@ class Sqlfuncs():
 
     # Atualizar banco de dados
 
-    def atualizar(self, table, column_id):
+    def atualizar(self, con, table, column_id, id_sql, dado, novo_dado):
 
         """altera dados na tabela sql"""
         cursor = con.cursor()
         try:
-            id_sql = input('Digite o ID que deseja buscar: ')
-            dado = input('Digite o que deseja alterar: ')
-            novo_dado = input('Digite o novo valor a ser alterado: ')
+
             sql = f'''update {table}
                         set ''' + dado + ''' = ''' + '\'' + novo_dado + '\'' + f'''
                         where {column_id} = ''' + '\'' + id_sql + '\''
@@ -81,25 +84,20 @@ class Sqlfuncs():
 
     # Cadastrar dados no banco
 
-    def cadastrar(self, table, column):
+    def cadastrar(self, con, table, column, nome_cadastro, dia_envio, email):
 
         """cadastrar dados no banco sql"""
         cursor = con.cursor()
         try:
-            criar_banco = f'''create database if not exists {self.database}'''
-            selecionar_banco = f'''use {self.database}'''
+            criar_banco = f'''create database if not exists empresas'''
+            selecionar_banco = f'''use empresas'''
             criar_tabela = f'''create table if not exists {table} (
                         id_empresa smallint auto_increment primary key,
                         nome_empresa varchar(50) not null unique,
                         data_envio varchar(50) not null,
                         email varchar(60) not null
                         )'''
-
-            nome_cadastro = input('Digite o nome a ser cadastrado: ')
-            dia_envio = input('Digite dia de envio: ')
-            email = input('Digite o email: ')
-
-            dados = '(\'' + nome_cadastro + '\',\'' + dia_envio + '\',\'' + email + '\''');'
+            dados = '(\'' + str(nome_cadastro) + '\',\'' + dia_envio + '\',\'' + str(email) + '\''');'
 
             inserir_empresa = f'''insert into {table} (
                         nome_empresa, data_envio, email) values ''' + dados
@@ -133,11 +131,10 @@ class Sqlfuncs():
 
     # Deletar do banco de dados
 
-    def deletar(self, table, column_id):
+    def deletar(self, con, table, column_id, id_sql):
 
         cursor = con.cursor()
         try:
-            id_sql = input('Digite o ID da Empresa a deletar: ')
             deletar_dado = f'''delete from {table} where {column_id} = ''' + '\'' + id_sql + '\''
             selecionar_banco = f'''use {self.database}'''
             consulta_sql = f'select * from {table} where {column_id} = ' + '\'' + id_sql + '\''
@@ -151,7 +148,7 @@ class Sqlfuncs():
                 print('Empresa: ', linha[1])
                 print('E-mail: ', linha[3])
                 print('Data de Envio: ', linha[2])
-
+            """
             apagar = input('Tem certeza que deseja apagar esta\n'
                            'empresa? s = sim/ n = não ')
             if apagar == 's':
@@ -159,10 +156,15 @@ class Sqlfuncs():
                 con.commit()
                 cursor.close()
                 if con.is_connected():
-                    print('Registro deletado com sucesso!')
+            """
+            cursor.execute(deletar_dado)
+            con.commit()
+            print('Registro deletado com sucesso!')
+            """
             if apagar == 'n':
                 deletar_dado = None
                 print('Operação Cancelada pelo usuário.')
+                """
 
         except Error as erro:
             print('Erro ao deletar valores.')

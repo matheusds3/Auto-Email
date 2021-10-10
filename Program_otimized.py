@@ -1,37 +1,34 @@
-from MySQLFunctions import *
-from Emailconfig import *
 from displayclient import *
-# Conexão ao banco de dados
+from Emailconfig import *
 
-#Sqlfuncs cria o objeto de conexão
-conectar = Sqlfuncs('127.0.0.1', 'empresas', 'matheus', '21454867')
-#Enviar cria o objeto de envio
-envia = Enviar('127.0.0.1', 'empresas', 'matheus', '21454867')
+# Programa Para Envio de E-mails Automáticos a Partir de um Banco de Dados MySQL
 
-# dados do banco acessado
+tela = Tk()
 
-table = 'empresas_datas'
-column_name = 'nome_empresa'
-column_id = 'id_empresa'
+tela1 = Display(tela)
+user_pass_and_con = tela1.retorna()
 
-# interface do usuário
+loop = 1
+while loop != 0:
+    tela2 = Display2(tela)
+    opcao = tela2.retornou()
 
-
-# Início do Programa
-"""
-print('\nE-mail automático para empresas.')
-print('\nEscolha uma das opções a seguir:\n'
-      'cadastrar, consultar, atualizar, deletar\n'
-      'enviar?')
-
-
-logar = conectar.conecta
-consultar = conectar.consulta # (insert table, insert column_name)
-atualizar = conectar.atualizar # (insert table, insert column_id)
-cadastrar = conectar.cadastrar # (table, column_name)
-deletar = conectar.deletar # (table, column_id)
-"""
-
-send = envia.enviar
-a = Tk()
-Display(a)
+    if opcao == 1:
+        DisplayCadastrar(tela, user_pass_and_con[0], user_pass_and_con[1], user_pass_and_con[2])
+        loop = 1
+    elif opcao == 2:
+        DisplayAtualizar(tela, user_pass_and_con[0], user_pass_and_con[1], user_pass_and_con[2])
+        loop = 1
+    elif opcao == 3:
+        DisplayConsultar(tela, user_pass_and_con[0], user_pass_and_con[1], user_pass_and_con[2])
+        loop = 1
+    elif opcao == 4:
+        DisplayDeletar(tela, user_pass_and_con[0], user_pass_and_con[1], user_pass_and_con[2])
+        loop = 1
+    elif opcao == 5:
+        Enviar("127.0.0.1", "empresas", user_pass_and_con[0], user_pass_and_con[1]).enviar()
+        loop = 1
+    elif opcao == 6:
+        loop = 0
+Sqlfuncs("127.0.0.1", "empresas",
+         user_pass_and_con[0], user_pass_and_con[1]).desconecta(user_pass_and_con[2])
