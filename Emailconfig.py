@@ -20,11 +20,7 @@ class Enviar():
 
     """Envia e-mails automáticos com anexos para diversos objetos do banco de dados"""
 
-    def __init__(self, host, database, user, password, con):
-        self.host = host
-        self.database = database
-        self.user = user
-        self.password = password
+    def __init__(self, con):
         self.con = con
 
     def enviar(self):

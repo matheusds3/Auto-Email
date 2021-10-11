@@ -42,10 +42,9 @@ class Display:
         self.py.place(relx=0.85, rely=0.94, relwidth=0.15, relheight=0.05)
 
     def funcs(self):
-        self.hosting = Sqlfuncs('127.0.0.1', 'empresas',
-                                f'{self.user_entry.get()}', f'{self.password_entry.get()}').conecta()
+        self.hosting = Sqlfuncs().conecta('127.0.0.1', 'empresas',
+                                          f'{self.user_entry.get()}', f'{self.password_entry.get()}')
         if self.hosting[1] == True:
-            print('True')
             self.close()
             self.retorna()
 
@@ -58,7 +57,7 @@ class Display:
         self.user_entry.delete(0,END)
         self.password_entry.delete(0, END)
     def retorna(self):
-        return self.user_entry.get(), self.password_entry.get(), self.hosting[0]
+        return self.hosting[0]
 
 # Tela de Opções
 
@@ -160,10 +159,8 @@ class Display2:
 # Display de Cadastro
 
 class DisplayCadastrar:
-    def __init__(self, tela, user_entry, password_entry,con):
+    def __init__(self, tela, con):
         self.tela = tela
-        self.user_entry = user_entry
-        self.password_entry = password_entry
         self.con = con
         self.screen_cadastro()
         self.screen_frame_cadastro()
@@ -212,8 +209,7 @@ class DisplayCadastrar:
 
     def funcs_cadastro(self):
 
-        Sqlfuncs('127.0.0.1', 'empresas', f'{self.user_entry}',
-                 f'{self.password_entry}').cadastrar(self.con, 'empresas_datas', 'nome_empresa', self.cadastro_nome_entry.get(), self.dia_entry.get(), self.email_entry.get())
+        Sqlfuncs().cadastrar(self.con, 'empresas_datas', 'nome_empresa', self.cadastro_nome_entry.get(), self.dia_entry.get(), self.email_entry.get())
         self.close()
     def close(self):
         self.tela.quit()
@@ -221,10 +217,8 @@ class DisplayCadastrar:
 # Display Atualizar
 
 class DisplayAtualizar:
-    def __init__(self, tela, user_entry, password_entry,con):
+    def __init__(self, tela,con):
         self.tela = tela
-        self.user_entry = user_entry
-        self.password_entry = password_entry
         self.con = con
         self.screen_cadastro()
         self.screen_frame_cadastro()
@@ -273,8 +267,7 @@ class DisplayAtualizar:
 
     def funcs_atualiza(self):
 
-        Sqlfuncs('127.0.0.1', 'empresas', f'{self.user_entry}',
-                 f'{self.password_entry}').atualizar(self.con, 'empresas_datas', 'id_empresa', self.id_entry.get(), self.dado_entry.get(), self.novo_dado_entry.get())
+        Sqlfuncs().atualizar(self.con, 'empresas_datas', 'id_empresa', self.id_entry.get(), self.dado_entry.get(), self.novo_dado_entry.get())
         self.close()
 
     def close(self):
@@ -283,10 +276,8 @@ class DisplayAtualizar:
 # Display Consultar
 
 class DisplayConsultar:
-    def __init__(self, tela, user_entry, password_entry,con):
+    def __init__(self, tela,con):
         self.tela = tela
-        self.user_entry = user_entry
-        self.password_entry = password_entry
         self.con = con
         self.screen_cadastro()
         self.screen_frame_cadastro()
@@ -321,8 +312,7 @@ class DisplayConsultar:
 
     def funcs_consulta(self):
 
-        Sqlfuncs('127.0.0.1', 'empresas', f'{self.user_entry}',
-                 f'{self.password_entry}').consulta(self.con, 'empresas_datas', 'nome_empresa', self.nome_entry.get())
+        Sqlfuncs().consulta(self.con, 'empresas_datas', 'nome_empresa', self.nome_entry.get())
         self.close()
 
     def close(self):
@@ -331,10 +321,8 @@ class DisplayConsultar:
 # Display Deletar
 
 class DisplayDeletar:
-    def __init__(self, tela, user_entry, password_entry,con):
+    def __init__(self, tela,con):
         self.tela = tela
-        self.user_entry = user_entry
-        self.password_entry = password_entry
         self.con = con
         self.screen_cadastro()
         self.screen_frame_cadastro()
@@ -370,8 +358,7 @@ class DisplayDeletar:
     def funcs_deleta(self):
 
 
-        Sqlfuncs('127.0.0.1', 'empresas', f'{self.user_entry}',
-                 f'{self.password_entry}').deletar(self.con, 'empresas_datas', 'id_empresa', self.id_entry.get())
+        Sqlfuncs().deletar(self.con, 'empresas_datas', 'id_empresa', self.id_entry.get())
 
         self.close()
 

@@ -7,13 +7,14 @@ class Sqlfuncs():
 
     """conecta ao banco sql"""
 
-    def __init__(self, host, database, user, password):
+    def __init__(self):
+        pass
+
+    def conecta(self, host, database, user, password):
         self.host = host
         self.database = database
         self.user = user
         self.password = password
-
-    def conecta(self):
         try:
             global con
             self.con = mysql.connector.connect(
@@ -43,7 +44,7 @@ class Sqlfuncs():
             messagebox.showinfo("", "Insira o nome!")
         else:
             try:
-                selecionar_banco = f'''use {self.database}'''
+                selecionar_banco = '''use empresas'''
                 consulta_sql = f'select * from {table} where {column_name} = ' + '\'' + keyword + '\''
                 cursor.execute(selecionar_banco)
                 cursor.execute(consulta_sql)
@@ -79,7 +80,7 @@ class Sqlfuncs():
                         set ''' + dado + ''' = ''' + '\'' + novo_dado + '\'' + f'''
                         where {column_id} = ''' + '\'' + id_sql + '\''
 
-            selecionar_banco = f'''use {self.database}'''
+            selecionar_banco = '''use empresas'''
             cursor.execute(selecionar_banco)
             cursor.execute(sql)
             con.commit()
@@ -167,7 +168,7 @@ class Sqlfuncs():
         else:
             try:
                 deletar_dado = f'''delete from {table} where {column_id} = ''' + '\'' + id_sql + '\''
-                selecionar_banco = f'''use {self.database}'''
+                selecionar_banco = f'''use empresas'''
                 consulta_sql = f'select * from {table} where {column_id} = ' + '\'' + id_sql + '\''
 
                 cursor.execute(selecionar_banco)
