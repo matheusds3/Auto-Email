@@ -1,7 +1,7 @@
-import mysql.connector
-from mysql.connector import Error
+
 from tkinter import messagebox
 import pymysql.cursors
+from pymysql.err import Error
 
 class Sqlfuncs():
 
@@ -23,7 +23,6 @@ class Sqlfuncs():
                 user=self.user,
                 password=self.password
             )
-            #if self.con.is_connected:
             return self.con, True
         except Error as erro:
             messagebox.showinfo("Erro", "Dados Incorretos!")
@@ -65,7 +64,6 @@ class Sqlfuncs():
             except Error as erro:
                 messagebox.showinfo("Erro", "Erro ao consultar {}".format(erro))
             finally:
-                #if con.is_connected():
                 cursor.close()
 
     # Atualizar banco de dados
@@ -91,7 +89,6 @@ class Sqlfuncs():
                                         " {}".format(erro))
 
         finally:
-            #if con.is_connected():
             cursor.close()
 
     # Cadastrar dados no banco
@@ -140,7 +137,6 @@ class Sqlfuncs():
 
 
                 cursor.close()
-               # if con.is_connected():
                 messagebox.showinfo("Registrado", "Registro Inserido com Sucesso!\n"
                                                   f"Id: {self.id}\n"
                                                   f"Empresa: {self.empresa}\n"
@@ -155,7 +151,6 @@ class Sqlfuncs():
                                             " com mesmo nome!")
 
             finally:
-               # if con.is_connected():
                  cursor.close()
 
     # Deletar do banco de dados
@@ -180,7 +175,6 @@ class Sqlfuncs():
                     self.empresa = linha[1]
                     self.email = linha[3]
                     self.envio = linha[2]
-                #if con.is_connected():
                 messagebox.showinfo("", "Registro Deletado com Sucesso!\n"
                                         f"Id: {self.id}\n"
                                         f"Empresa: {self.empresa}\n"
@@ -191,5 +185,4 @@ class Sqlfuncs():
             except Error as erro:
                 messagebox.showinfo("Erro", "Erro ao deletar dado.")
             finally:
-                #if con.is_connected():
                 cursor.close()
