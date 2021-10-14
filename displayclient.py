@@ -1,5 +1,5 @@
 from tkinter import *
-from MySQLFunctions import *
+from functions import *
 
 
 # Tela Inicial
